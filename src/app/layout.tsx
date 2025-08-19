@@ -1,3 +1,5 @@
+import Providers from "@/providers";
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -27,8 +29,17 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
 }
+
+// Next JS + MongoDB + Auth JS
+// Authentication
+
+// Step 1: create a Auth.ts file in root directory
+// step 2: create a auth.config.ts file in root directory (auth is not node js environment so, databases, bcrypt will not run here) (we use edge connection database) but you  can decleare otehrs socails provider to logins except credentials login due to database connection to check user.
+// Step 3: create a middleware.ts file in root directory
+// Step 4: create a providers.tsx file in app directory
+// step 5: create a app/api/auth/[...nextauth]/route.ts file
