@@ -2,14 +2,11 @@
 
 import NextAuth from "next-auth";
 import authConfig from "./auth.config";
-import { getToken } from "next-auth/jwt";
 
 const { auth } = NextAuth(authConfig);
 
 export default auth(async (req) => {
-  const token = await getToken({ req });
-  console.log(token);
-
+ 
   const { nextUrl } = req;
   const isLoggedIn = !!req.auth;
 

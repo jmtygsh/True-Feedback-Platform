@@ -3,6 +3,8 @@ import NextAuth from "next-auth";
 
 // Import the Credentials provider, which allows users to log in with an email and password.
 import Credentials from "next-auth/providers/credentials";
+
+
 // Import bcrypt for securely comparing the user's password with the hashed password in the database.
 import bcrypt from "bcrypt";
 
