@@ -13,8 +13,7 @@ export default auth(async (req) => {
   const isAuthRoute =
     nextUrl.pathname.startsWith("/sign-in") ||
     nextUrl.pathname.startsWith("/sign-up") ||
-    nextUrl.pathname.startsWith("/verify") ||
-    nextUrl.pathname === "/";
+    nextUrl.pathname.startsWith("/verify")
 
   const isProtectedRoute = nextUrl.pathname.startsWith("/dashboard");
 

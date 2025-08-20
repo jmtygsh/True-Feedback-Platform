@@ -2,6 +2,8 @@ import { resendLib } from "@/lib/resend";
 import VerificationEmail from "../../emails/VerificationEmail";
 import { ApiResponse } from "@/types/ApiResponse";
 
+console.log("resend api key hit -----------", resendLib);
+
 export async function sendVerificationEmail(
   email: string,
   username: string,
