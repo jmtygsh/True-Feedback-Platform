@@ -42,7 +42,7 @@ export async function POST(request: Request) {
     return Response.json(
       {
         success: true,
-        message: "Message acceptance updated successfully",
+        message: "Toggle updated successfully",
         updatedUser,
       },
       { status: 200 }

@@ -12,7 +12,6 @@ const userNameQuerySchema = z.object({
 });
 
 export async function GET(request: Request) {
-
   await connectToDatabase();
 
   try {

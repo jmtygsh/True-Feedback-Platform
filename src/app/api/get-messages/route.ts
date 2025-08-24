@@ -25,22 +25,27 @@ export async function GET(request: Request) {
 
   // Just imagine what if user has 10,000 messages ?
 
-  //   this will convert into object id
-  const userId = new mongoose.Types.ObjectId(_id);
-
   try {
     const user = await UserModel.aggregate([
-      // macth the id
-      { $match: { id: userId } },
+      // 1. Match the specific user by _id (convert string to ObjectId)
+      {
+        $match: { _id: new mongoose.Types.ObjectId(_id) },
+      },
 
-      // all messages are array but when we use unwind it will deconstruct the array. now can access directly like a object
+      // 2. Break the messages array into individual documents
       { $unwind: "$messages" },
 
-      // sorting base on createdAt descending
+      // 3. Sort the messages by createdAt (descending = newest first)
       { $sort: { "messages.createdAt": -1 } },
 
-      // now we can group them all
-      { $group: { _id: "$_id", messages: { $push: "$messages" } } },
+      // 4. Group back into a single document
+      //    Collect all messages back into an array, now sorted
+      {
+        $group: {
+          _id: "$_id",
+          messages: { $push: "$messages" },
+        },
+      },
     ]);
 
     if (!user || user.length === 0) {
@@ -53,7 +58,7 @@ export async function GET(request: Request) {
       );
     }
 
-    console.log("aggregation ============================>", user);
+    // console.log("aggregation ============================>", user);
 
     return Response.json(
       {

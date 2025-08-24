@@ -1,6 +1,9 @@
 import mongoose, { Schema, Document } from "mongoose";
 
+
+// Since Message extends Document, Mongoose automatically adds _id
 export interface Message extends Document {
+  _id: string;
   content: string;
   createdAt: Date;
 }

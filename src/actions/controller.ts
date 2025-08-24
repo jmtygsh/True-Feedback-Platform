@@ -1,11 +1,6 @@
 "use server";
 
-import { signIn, signOut } from "@/auth";
-
-// logout
-export async function doLogout() {
-  await signOut({ redirectTo: "/" });
-}
+import { signIn } from "@/auth";
 
 // login with email and password
 export async function doCredentialLogin(formData: FormData) {

@@ -1,71 +1,16 @@
 "use client";
 
 import { doCredentialLogin } from "@/actions/controller";
-import { useState, ChangeEvent } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { useSession } from "next-auth/react"; // 👈 important
 
-// SVG Icon Components for better readability
-const UserIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400"
-  >
-    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-    <circle cx="12" cy="7" r="4" />
-  </svg>
-);
-
-const LockIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400"
-  >
-    <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
-    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-  </svg>
-);
-
-const SpinnerIcon = () => (
-  <svg
-    className="animate-spin h-5 w-5 text-white"
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-  >
-    <circle
-      className="opacity-25"
-      cx="12"
-      cy="12"
-      r="10"
-      stroke="currentColor"
-      strokeWidth="4"
-    ></circle>
-    <path
-      className="opacity-75"
-      fill="currentColor"
-      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-    ></path>
-  </svg>
-);
 
 const SignInForm = () => {
   const router = useRouter();
+  const { update } = useSession(); // 👈 gives you the update() function
+
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -85,7 +30,13 @@ const SignInForm = () => {
       if (response?.error) {
         setError(response.error.message || "An unknown error occurred.");
       } else {
-        router.push("/dashboard"); // Redirect to a protected route
+        toast.success(response?.message || "Login successful!");
+
+        // 🔑 Refresh session immediately so Navbar updates
+        await update();
+
+        // Then redirect
+        router.push("/dashboard");
       }
     } catch (e: any) {
       console.error(e);
@@ -126,7 +77,7 @@ const SignInForm = () => {
             >
               Email or Username
             </label>
-            <UserIcon />
+
             <input
               id="email"
               name="email"
@@ -148,7 +99,7 @@ const SignInForm = () => {
             >
               Password
             </label>
-            <LockIcon />
+
             <input
               id="password"
               name="password"
@@ -179,7 +130,7 @@ const SignInForm = () => {
               disabled={loading}
               className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-400 disabled:cursor-not-allowed"
             >
-              {loading ? <SpinnerIcon /> : "Sign In"}
+              {loading ? "Signing In..." : "Sign In"}
             </button>
           </div>
         </form>

@@ -6,7 +6,7 @@ import { sendVerificationEmail } from "@/helpers/sendVerificationEmail";
 export async function POST(request: Request) {
   await connectToDatabase();
 
-  console.log(request);
+  // console.log(request);
 
   try {
     const { username, email, password } = await request.json();

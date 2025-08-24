@@ -28,6 +28,7 @@ export async function POST(request: Request) {
         { status: 403 }
       );
     }
+    
 
     const newMessage = {
       content,
